@@ -1,6 +1,8 @@
 package algo
 
-import "testing"
+import (
+	"testing"
+)
 
 func sameValueSlice(a, b []int) bool {
 	if len(a) != len(b) {
@@ -54,6 +56,28 @@ func TestAddTwoNumbers(t *testing.T) {
 		t.Fail()
 	}
 	if a4 != 1000 {
+		t.Fail()
+	}
+}
+
+func TestLengthOfLongestSubstring(t *testing.T) {
+	a1 := lengthOfLongestSubstring("bbbbb")
+	a2 := lengthOfLongestSubstring("pwwkew")
+	a3 := lengthOfLongestSubstring("abcabcbb")
+	a4 := lengthOfLongestSubstring("pwwkewa")
+	if a1 != 1 {
+		t.Fail()
+	}
+
+	if a2 != 3 {
+		t.Fail()
+	}
+
+	if a3 != 3 {
+		t.Fail()
+	}
+
+	if a4 != 4 {
 		t.Fail()
 	}
 }

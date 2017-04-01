@@ -106,3 +106,37 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	}
 	return result.Next
 }
+
+func lengthOfLongestSubstring(s string) int {
+	// traverse the string
+	// keep the longest substrings' character
+	maxLen := 0
+	nowLen := 0
+	maxC := make(map[rune]bool)
+	startIndex := 0
+	// maxIndex := 0
+
+	for i, char := range s {
+		if maxC[char] {
+			// remove the character, and len begin from that
+			for startIndex < i {
+				nc := rune(s[startIndex])
+				startIndex++
+				if nc == char {
+					break
+				}
+				nowLen--
+				delete(maxC, nc)
+			}
+			continue
+		}
+		// extend the substring
+		nowLen++
+		maxC[char] = true
+		if nowLen > maxLen {
+			maxLen = nowLen
+			// maxIndex = startIndex
+		}
+	}
+	return maxLen
+}
