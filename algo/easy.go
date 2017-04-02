@@ -114,6 +114,13 @@ func maxInt(x, y int) int {
 	return y
 }
 
+func minInt(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
+}
+
 func lengthOfLongestSubstring(s string) int {
 	// Old version
 	// // traverse the string
@@ -160,4 +167,25 @@ func lengthOfLongestSubstring(s string) int {
 		max = maxInt(max, i-maxIndex+1)
 	}
 	return max
+}
+
+func isEven(a int) bool {
+	return (a & 0x01) == 0
+}
+
+func findMedian(nums []int) float64 {
+	n := len(nums)
+	if n == 0 {
+		return 0.0
+	}
+	half := n / 2
+
+	if isEven(n) {
+		return float64(nums[half-1]+nums[half]) / 2
+	}
+	return float64(nums[half])
+}
+
+func FindMedianSortedArrays(nums1 []int, nums2 []int) (result float64) {
+	return findMedianSortedArrays(nums1, nums2)
 }
