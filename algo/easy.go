@@ -186,6 +186,21 @@ func findMedian(nums []int) float64 {
 	return float64(nums[half])
 }
 
-func FindMedianSortedArrays(nums1 []int, nums2 []int) (result float64) {
-	return findMedianSortedArrays(nums1, nums2)
+// func FindMedianSortedArrays(nums1 []int, nums2 []int) (result float64) {
+// 	return findMedianSortedArrays(nums1, nums2)
+// }
+
+func reverse(x int) int {
+	result := 0
+	base := 10
+	max := 2147483647
+	// use x != 0 can solve negative case
+	for x != 0 {
+		result = result*base + x%base
+		x /= base
+	}
+	if result > max || result < max*-1 {
+		return 0
+	}
+	return result
 }
