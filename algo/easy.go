@@ -194,13 +194,27 @@ func reverse(x int) int {
 	result := 0
 	base := 10
 	max := 2147483647
+	min := -2147483648
 	// use x != 0 can solve negative case
 	for x != 0 {
 		result = result*base + x%base
 		x /= base
 	}
-	if result > max || result < max*-1 {
+	if result > max || result < min {
 		return 0
 	}
 	return result
+}
+
+func isPalindromeInteger(x int) bool {
+	// only compare half of digit
+	if x < 0 || (x != 0 && x%10 == 0) {
+		return false
+	}
+	result := 0
+	for x > result {
+		result = result*10 + x%10
+		x /= 10
+	}
+	return (x == result) || (x == result/10)
 }
