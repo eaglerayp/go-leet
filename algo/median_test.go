@@ -60,3 +60,31 @@ func TestZigconvert(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestMyAtoi(t *testing.T) {
+	if myAtoi("123") != 123 {
+		t.Fail()
+	}
+	if myAtoi("0") != 0 {
+		t.Fail()
+	}
+	if myAtoi("") != 0 {
+		fmt.Println(myAtoi(""))
+		t.Fail()
+	}
+	if myAtoi("-123") != -123 {
+		t.Fail()
+	}
+	if myAtoi("999999999999999999999999999") != 0 {
+		fmt.Println(myAtoi("999999999999999999999999999"))
+		t.Fail()
+	}
+
+	if myAtoi("+-2") != 0 {
+		t.Fail()
+	}
+
+	if myAtoi("  - 2") != 0 {
+		t.Fail()
+	}
+}

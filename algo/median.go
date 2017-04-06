@@ -88,3 +88,35 @@ func convert(s string, numRows int) string {
 	}
 	return string(result)
 }
+
+func myAtoi(str string) int {
+	result := 0
+	if len(str) < 1 {
+		return 0
+	}
+	// check negative
+	negative := str[0] == '-'
+	chMap := make(map[rune]int)
+	for i, v := range "0123456789" {
+		chMap[v] = i
+	}
+
+	max := 1<<31 - 1
+	for _, v := range str {
+		digit, ok := chMap[v]
+		if !ok {
+			continue
+		}
+		result = result*10 + digit
+		if result > max {
+			// overflow
+			return 0
+		}
+	}
+
+	if negative {
+		result *= -1
+	}
+
+	return result
+}
