@@ -94,28 +94,54 @@ func myAtoi(str string) int {
 	if len(str) < 1 {
 		return 0
 	}
-	// check negative
-	negative := str[0] == '-'
+	// reach first num or + -
+	firstIndex := 0
+	n := len(str)
+	for firstIndex < n {
+		if str[firstIndex] != ' ' {
+			break
+		}
+		firstIndex++
+	}
+	// check sign
+	var negative bool
+	if str[firstIndex] == '-' {
+		negative = true
+		firstIndex++
+	} else if str[firstIndex] == '+' {
+		firstIndex++
+	}
+
 	chMap := make(map[rune]int)
 	for i, v := range "0123456789" {
 		chMap[v] = i
 	}
 
-	max := 1<<31 - 1
-	for _, v := range str {
+	max := 2147483647
+	min := -2147483648
+	for i := firstIndex; i < n; i++ {
+		v := rune(str[i])
 		digit, ok := chMap[v]
 		if !ok {
-			continue
+			break
 		}
 		result = result*10 + digit
-		if result > max {
+		if result > 2147483648 {
 			// overflow
-			return 0
+			break
 		}
 	}
 
 	if negative {
 		result *= -1
+	}
+
+	if result > max {
+		return max
+	}
+
+	if result < min {
+		return min
 	}
 
 	return result
