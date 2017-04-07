@@ -115,4 +115,9 @@ func TestIsMatch(t *testing.T) {
 		fmt.Println("T5")
 		t.Fail()
 	}
+
+	if !isMatch("", ".*") {
+		fmt.Println("T6")
+		t.Fail()
+	}
 }

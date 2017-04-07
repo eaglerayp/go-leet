@@ -1,7 +1,5 @@
 package algo
 
-import "fmt"
-
 func findMedianSortedArrays(nums1 []int, nums2 []int) (result float64) {
 	// design, from middle1 increase to find the balance value
 	// make sure len2 > len1
@@ -60,74 +58,41 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) (result float64) {
 }
 
 func isMatch(s string, p string) bool {
-	np := len(p)
-	if np == 0 || p[0] == '*' {
-		return false
-	}
 	ns := len(s)
-	// split p to star and normal in order
-	// a*bca*d* to  normal:bc start: aad
-	// remove s with bc
-	stars := []byte{}
-	chars := []byte{}
-	starsIndex := []int{}
-	charsIndex := []int{}
-	// first scan p
-	i := 0
-	for i < np-1 {
-		if p[i+1] == '*' {
-			// star case
-			if p[i] == '*' {
-				// cannot handle ** case
-				return false
-			}
-			stars = append(stars, p[i])
-			starsIndex = append(starsIndex, i)
-			i = i + 2
-		} else {
-			// normal case
-			// add to normal chars
-			chars = append(chars, p[i])
-			charsIndex = append(charsIndex, i)
-			i++
+	np := len(p)
+	// make dp with two dimension array
+	// +1 for not handling index out of range
+	dp := make([][]bool, ns+1)
+	for i := 0; i < len(dp); i++ {
+		dp[i] = make([]bool, np+1)
+	}
+	dp[0][0] = true
+
+	// handle p is all by star case
+	for i := 0; i < np; i++ {
+		if p[i] == '*' && dp[0][i-1] {
+			dp[0][i+1] = true
 		}
 	}
-	// last char
-	if i == np-1 {
-		chars = append(chars, p[i])
-	}
-	fmt.Println("chars:", chars)
-	fmt.Println("stars:", stars)
-	lenN := len(chars)
-	lenS := len(stars)
-	// traverse s, each element should match for any p
-	// i = 0
-	n := 0
-	si := 0
-	instar := false
-	for j := 0; j < ns; j++ {
-		// try match s with normal char and fill with star case, if not false, true otherwise
-		if n < lenN && s[j] == chars[n] {
-			if instar {
-				instar = false
-				si++
+	// dp[i][j] = true if
+	// 1. dp[i-1][j-1]&& s[i] == p[j] || p[j]=='.'
+	// p[j]== *
+	// 1.  count as 0 time   (p[j-1]!= s[i]) dp[i][j] = dp[i][j-2] ;
+	// 2.  count as 1 time   (p[j-1]==s[i] || p[j-1]=='.') dp[i][j] = dp[i][j-1]
+	// 3.  count as n time   (s[i]==s[i-1] && p[j-1]==s[i]) dp[i][j] = dp[i-1][j]
+	for i := 0; i < ns; i++ {
+		for j := 0; j < np; j++ {
+			if p[j] == '.' || p[j] == s[i] {
+				dp[i+1][j+1] = dp[i][j]
 			}
-			n++
-		} else {
-			// star case only can use when is smaller then n index
-			for si < lenS && siAvailable(si, n, starsIndex, charsIndex) && s[j] != stars[si] {
-				si++
+			if p[j] == '*' {
+				if p[j-1] != '.' && p[j-1] != s[i] {
+					dp[i+1][j+1] = dp[i+1][j-1]
+				} else {
+					dp[i+1][j+1] = (dp[i+1][j] || dp[i][j+1] || dp[i+1][j-1])
+				}
 			}
-			if si == lenS || starsIndex[si] > charsIndex[n] {
-				return false
-			}
-			instar = true
 		}
 	}
-
-	return n == lenN
-}
-
-func siAvailable(si, n int, starsIndex, charsIndex []int) bool {
-	return true
+	return dp[ns][np]
 }
