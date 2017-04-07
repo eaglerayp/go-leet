@@ -1,5 +1,7 @@
 package algo
 
+import "fmt"
+
 func findMedianSortedArrays(nums1 []int, nums2 []int) (result float64) {
 	// design, from middle1 increase to find the balance value
 	// make sure len2 > len1
@@ -55,4 +57,77 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) (result float64) {
 	}
 
 	return
+}
+
+func isMatch(s string, p string) bool {
+	np := len(p)
+	if np == 0 || p[0] == '*' {
+		return false
+	}
+	ns := len(s)
+	// split p to star and normal in order
+	// a*bca*d* to  normal:bc start: aad
+	// remove s with bc
+	stars := []byte{}
+	chars := []byte{}
+	starsIndex := []int{}
+	charsIndex := []int{}
+	// first scan p
+	i := 0
+	for i < np-1 {
+		if p[i+1] == '*' {
+			// star case
+			if p[i] == '*' {
+				// cannot handle ** case
+				return false
+			}
+			stars = append(stars, p[i])
+			starsIndex = append(starsIndex, i)
+			i = i + 2
+		} else {
+			// normal case
+			// add to normal chars
+			chars = append(chars, p[i])
+			charsIndex = append(charsIndex, i)
+			i++
+		}
+	}
+	// last char
+	if i == np-1 {
+		chars = append(chars, p[i])
+	}
+	fmt.Println("chars:", chars)
+	fmt.Println("stars:", stars)
+	lenN := len(chars)
+	lenS := len(stars)
+	// traverse s, each element should match for any p
+	// i = 0
+	n := 0
+	si := 0
+	instar := false
+	for j := 0; j < ns; j++ {
+		// try match s with normal char and fill with star case, if not false, true otherwise
+		if n < lenN && s[j] == chars[n] {
+			if instar {
+				instar = false
+				si++
+			}
+			n++
+		} else {
+			// star case only can use when is smaller then n index
+			for si < lenS && siAvailable(si, n, starsIndex, charsIndex) && s[j] != stars[si] {
+				si++
+			}
+			if si == lenS || starsIndex[si] > charsIndex[n] {
+				return false
+			}
+			instar = true
+		}
+	}
+
+	return n == lenN
+}
+
+func siAvailable(si, n int, starsIndex, charsIndex []int) bool {
+	return true
 }

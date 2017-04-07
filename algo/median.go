@@ -104,11 +104,11 @@ func myAtoi(str string) int {
 		firstIndex++
 	}
 	// check sign
-	var negative bool
-	if str[firstIndex] == '-' {
-		negative = true
+	sign := 1
+	if str[firstIndex] == '+' {
 		firstIndex++
-	} else if str[firstIndex] == '+' {
+	} else if str[firstIndex] == '-' {
+		sign = -1
 		firstIndex++
 	}
 
@@ -126,23 +126,14 @@ func myAtoi(str string) int {
 			break
 		}
 		result = result*10 + digit
-		if result > 2147483648 {
-			// overflow
-			break
+		if result > max/10 || (result == max/10 && digit-0 > 7) {
+			if sign == 1 {
+				return max
+			} else {
+				return min
+			}
 		}
 	}
 
-	if negative {
-		result *= -1
-	}
-
-	if result > max {
-		return max
-	}
-
-	if result < min {
-		return min
-	}
-
-	return result
+	return result * sign
 }
