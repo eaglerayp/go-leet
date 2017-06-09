@@ -5,6 +5,10 @@ type ListNode struct {
 	Next *ListNode
 }
 
+const (
+	MAXINT = 1<<63 - 1
+)
+
 func listToNumber(l1 *ListNode) int {
 	var i1 int
 	d1 := 1
@@ -28,6 +32,16 @@ func minInt(x, y int) int {
 		return x
 	}
 	return y
+}
+
+func absInt(x int) int {
+	if x < 0 {
+		return -x
+	}
+	if x == 0 {
+		return 0 // return correctly abs(-0)
+	}
+	return x
 }
 
 func isEven(a int) bool {
