@@ -1,9 +1,6 @@
 package algo
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
+import "fmt"
 
 const (
 	MAXINT = 1<<63 - 1
@@ -84,4 +81,11 @@ func isPalindromeIndex(s string, begin, end int) bool {
 		end--
 	}
 	return true
+}
+
+func iterateList(head *ListNode) {
+	for head != nil {
+		fmt.Println(head.Val)
+		head = head.Next
+	}
 }
