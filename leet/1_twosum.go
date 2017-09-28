@@ -7,9 +7,8 @@ func twoSum(nums []int, target int) []int {
 		other := target - v
 		if i2, ok := m[other]; ok {
 			return []int{i, i2}
-		} else {
-			m[v] = i
 		}
+		m[v] = i
 	}
 	return nil
 }

@@ -3,6 +3,7 @@ package leet
 import "fmt"
 
 const (
+	// MAXINT equal to math.MaxInt
 	MAXINT = 1<<63 - 1
 )
 
