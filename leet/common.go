@@ -7,6 +7,24 @@ const (
 	MAXINT = 1<<63 - 1
 )
 
+func binarySearch(nums []int, target int) int {
+	left := 0
+	right := len(nums)
+	var mi int
+	for left < right {
+		mi = (left + right) / 2
+		if target == nums[mi] {
+			return mi
+		}
+		if target > nums[mi] {
+			left = mi + 1
+		} else {
+			right = mi
+		}
+	}
+	return -1
+}
+
 func listToNumber(l1 *ListNode) int {
 	var i1 int
 	d1 := 1
